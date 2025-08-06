@@ -5,4 +5,13 @@ import tailwindcss from '@tailwindcss/vite'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://proyecto-backend-3ksi.onrender.com',
+        changeOrigin: true,
+        
+      }
+    }
+  }
 })
