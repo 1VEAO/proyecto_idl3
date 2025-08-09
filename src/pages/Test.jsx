@@ -2,7 +2,7 @@ import React from "react";
 import useTest from "../hooks/hook.js";
 import Pregunta from "../components/Pregunta";
 import Resultado from "../components/Resultado";
-import { preguntas } from "../data/Data";
+import { preguntas } from "../data/data.js";
 
 export default function Test() {
   const {
