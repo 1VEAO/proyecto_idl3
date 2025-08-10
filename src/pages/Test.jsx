@@ -1,11 +1,12 @@
-import React from "react";
+// src/pages/Test.jsx
+import React, { useState } from "react";
 import useTest from "../hooks/hook.js";
 import Pregunta from "../components/Pregunta";
 import Resultado from "../components/Resultado";
+import Registro from "../components/Registro.jsx";
 import { preguntas } from "../data/data.js";
-import Regedit from "../components/Regedit.jsx";
 
-// Botón reutilizable
+// Botón reutilizable embebido
 const Boton = ({ onClick, disabled, children, color = "gray" }) => {
   const base = `px-4 py-2 rounded-lg text-white disabled:opacity-50 transition-colors`;
   const colores = {
@@ -22,6 +23,8 @@ const Boton = ({ onClick, disabled, children, color = "gray" }) => {
 };
 
 export default function Test() {
+  const [usuario, setUsuario] = useState(null);
+
   const {
     preguntaActual,
     respuestas,
@@ -36,6 +39,10 @@ export default function Test() {
     enviarFormulario,
     reiniciarTest,
   } = useTest();
+
+  if (!usuario) {
+    return <Registro onRegistro={setUsuario} />;
+  }
 
   if (resultado) {
     return <Resultado resultado={resultado} reiniciarTest={reiniciarTest} />;

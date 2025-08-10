@@ -3,6 +3,9 @@ import { useState, useEffect } from "react";
 export default function Resultado({ resultado, reiniciarTest }) {
   const [promedioGlobal, setPromedioGlobal] = useState(0);
   const [promedioPeru, setPromedioPeru] = useState(0);
+  const [demandaGlobal, setDemandaGlobal] = useState(0);
+  const [demandaPeru, setDemandaPeru] = useState(0);
+  const [cursos, setCursos] = useState([]);
 
   const calcularPromedio = (data, language) => {
     const filtrados = data.filter(item => item.Language === language);
@@ -11,25 +14,43 @@ export default function Resultado({ resultado, reiniciarTest }) {
     return salarios.length ? suma / salarios.length : 0;
   };
 
+  const calcularDemanda = (data, language) => {
+    return data.filter(item => item.Language === language).length;
+  };
+
+  const filtrarCursos = (data, language) => {
+    return data.filter(item => item.Language === language);
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [resGlobal, resPeru] = await Promise.all([
+        const [resGlobal, resPeru, resCursos] = await Promise.all([
           fetch("http://localhost:3000/demandaLenguajesExtranjero"),
           fetch("http://localhost:3000/demandaLenguajes"),
+          fetch("http://localhost:3000/cursos"),
         ]);
 
-        const [dataGlobal, dataPeru] = await Promise.all([
+        const [dataGlobal, dataPeru, dataCursos] = await Promise.all([
           resGlobal.json(),
           resPeru.json(),
+          resCursos.json(),
         ]);
 
-        setPromedioGlobal(calcularPromedio(dataGlobal, resultado.language));
-        setPromedioPeru(calcularPromedio(dataPeru, resultado.language));
+        const lenguaje = resultado.language;
+
+        setPromedioGlobal(calcularPromedio(dataGlobal, lenguaje));
+        setPromedioPeru(calcularPromedio(dataPeru, lenguaje));
+        setDemandaGlobal(calcularDemanda(dataGlobal, lenguaje));
+        setDemandaPeru(calcularDemanda(dataPeru, lenguaje));
+        setCursos(filtrarCursos(dataCursos, lenguaje));
       } catch (error) {
         console.error("Error al obtener datos:", error);
         setPromedioGlobal(0);
         setPromedioPeru(0);
+        setDemandaGlobal(0);
+        setDemandaPeru(0);
+        setCursos([]);
       }
     };
 
@@ -52,8 +73,8 @@ export default function Resultado({ resultado, reiniciarTest }) {
           <div className="grid gap-4">
             <div className="bg-gray-50 p-4 rounded-lg">
               <h3 className="font-medium">📊 Demanda laboral</h3>
-              <p>Perú: {resultado.peru?.demand_level || "Alta"}</p>
-              <p>Global: {resultado.global?.[0]?.demand_level || "Muy Alta"}</p>
+              <p>Perú: {demandaPeru} ofertas registradas</p>
+              <p>Global: {demandaGlobal} ofertas registradas</p>
             </div>
 
             <div className="bg-gray-50 p-4 rounded-lg">
@@ -62,12 +83,14 @@ export default function Resultado({ resultado, reiniciarTest }) {
               <p>Global: ${promedioGlobal.toFixed(2)} USD</p>
             </div>
 
-            {resultado.courses?.length > 0 && (
+            {cursos.length > 0 && (
               <div className="bg-gray-50 p-4 rounded-lg">
                 <h3 className="font-medium">🎓 Cursos recomendados</h3>
-                <ul className="list-disc pl-5">
-                  {resultado.courses.map((curso, i) => (
-                    <li key={i}>{curso}</li>
+                <ul className="list-disc pl-5 space-y-2">
+                  {cursos.map((curso, i) => (
+                    <li key={i}>
+                      <strong>{curso.Institution}</strong> - {curso.Level}, {curso.Modality}, {curso.Duration_weeks} semanas ({curso.Region})
+                    </li>
                   ))}
                 </ul>
               </div>
