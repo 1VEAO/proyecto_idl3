@@ -1,5 +1,20 @@
 import { Link } from "react-router";
 
+const campos = [
+  {
+    id: "nombre",
+    label: "Nombre:",
+    type: "text",
+    placeholder: "Tu nombre",
+  },
+  {
+    id: "email",
+    label: "Correo electrónico:",
+    type: "email",
+    placeholder: "tucorreo@ejemplo.com",
+  },
+];
+
 const Contacto = () => {
   return (
     <main className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -13,31 +28,20 @@ const Contacto = () => {
         </p>
 
         <form className="flex flex-col gap-4">
-          <div>
-            <label htmlFor="nombre" className="block text-gray-600 font-medium">
-              Nombre:
-            </label>
-            <input
-              type="text"
-              id="nombre"
-              name="nombre"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              placeholder="Tu nombre"
-            />
-          </div>
-
-          <div>
-            <label htmlFor="email" className="block text-gray-600 font-medium">
-              Correo electrónico:
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
-              placeholder="tucorreo@ejemplo.com"
-            />
-          </div>
+          {campos.map(({ id, label, type, placeholder }) => (
+            <div key={id}>
+              <label htmlFor={id} className="block text-gray-600 font-medium">
+                {label}
+              </label>
+              <input
+                type={type}
+                id={id}
+                name={id}
+                placeholder={placeholder}
+                className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
+              />
+            </div>
+          ))}
 
           <div>
             <label htmlFor="mensaje" className="block text-gray-600 font-medium">
@@ -47,8 +51,8 @@ const Contacto = () => {
               id="mensaje"
               name="mensaje"
               rows="5"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
               placeholder="Escribe tu mensaje aquí..."
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-sky-500"
             ></textarea>
           </div>
 

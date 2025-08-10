@@ -7,14 +7,14 @@ export default function Pregunta({ pregunta, respuestaSeleccionada, onSeleccion 
       <form className="flex flex-col gap-4">
         {pregunta.opciones.map((opcion, i) => {
           const id = `${pregunta.name}-${i}`;
+          const isSeleccionada = respuestaSeleccionada === opcion;
+
           return (
             <label
+              key={id}
               htmlFor={id}
-              key={i}
               className={`w-full flex items-center gap-2 border-2 ${
-                respuestaSeleccionada === opcion
-                  ? "border-green-500"
-                  : "border-gray-300"
+                isSeleccionada ? "border-green-500" : "border-gray-300"
               } bg-white h-15 pl-3 py-2 capitalize rounded-2xl cursor-pointer transition-colors`}
             >
               <input
@@ -22,7 +22,7 @@ export default function Pregunta({ pregunta, respuestaSeleccionada, onSeleccion 
                 name={pregunta.name}
                 id={id}
                 value={opcion}
-                checked={respuestaSeleccionada === opcion}
+                checked={isSeleccionada}
                 onChange={() => onSeleccion(opcion)}
                 className="accent-green-500"
               />

@@ -1,5 +1,20 @@
 import { Link } from "react-router";
 
+const publicaciones = [
+  {
+    titulo: "¿Qué lenguaje aprender primero?",
+    resumen:
+      "Elegir el primer lenguaje puede parecer abrumador. Aquí te explicamos cómo tomar la mejor decisión según tu perfil.",
+    enlace: "/blog/articulo1",
+  },
+  {
+    titulo: "Las habilidades más valoradas en 2025",
+    resumen:
+      "Más allá del lenguaje de programación, hay habilidades que toda persona en tecnología debe dominar.",
+    enlace: "/blog/articulo2",
+  },
+];
+
 const Blog = () => {
   return (
     <main className="min-h-screen bg-gray-100 p-6 flex flex-col items-center">
@@ -13,37 +28,23 @@ const Blog = () => {
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-          {/* Publicación 1 */}
-          <article className="bg-gray-50 border border-gray-200 p-5 rounded-xl hover:shadow transition">
-            <h2 className="text-xl font-semibold text-blue-600 mb-2">
-              ¿Qué lenguaje aprender primero?
-            </h2>
-            <p className="text-sm text-gray-600 mb-3">
-              Elegir el primer lenguaje puede parecer abrumador. Aquí te explicamos cómo tomar la mejor decisión según tu perfil.
-            </p>
-            <Link
-              to="/blog/articulo1"
-              className="text-blue-500 hover:underline text-sm font-medium"
+          {publicaciones.map(({ titulo, resumen, enlace }, i) => (
+            <article
+              key={i}
+              className="bg-gray-50 border border-gray-200 p-5 rounded-xl hover:shadow transition"
             >
-              Leer más →
-            </Link>
-          </article>
-
-          {/* Publicación 2 */}
-          <article className="bg-gray-50 border border-gray-200 p-5 rounded-xl hover:shadow transition">
-            <h2 className="text-xl font-semibold text-blue-600 mb-2">
-              Las habilidades más valoradas en 2025
-            </h2>
-            <p className="text-sm text-gray-600 mb-3">
-              Más allá del lenguaje de programación, hay habilidades que toda persona en tecnología debe dominar.
-            </p>
-            <Link
-              to="/blog/articulo2"
-              className="text-blue-500 hover:underline text-sm font-medium"
-            >
-              Leer más →
-            </Link>
-          </article>
+              <h2 className="text-xl font-semibold text-blue-600 mb-2">
+                {titulo}
+              </h2>
+              <p className="text-sm text-gray-600 mb-3">{resumen}</p>
+              <Link
+                to={enlace}
+                className="text-blue-500 hover:underline text-sm font-medium"
+              >
+                Leer más →
+              </Link>
+            </article>
+          ))}
         </div>
 
         <div className="mt-8 text-center">

@@ -1,60 +1,39 @@
 import { useState, useEffect } from "react";
 
 export default function Resultado({ resultado, reiniciarTest }) {
-  const [salariosGlobales, setSalariosGlobales] = useState([]);
-  const [salariosPeru, setSalariosPeru] = useState([]);
   const [promedioGlobal, setPromedioGlobal] = useState(0);
   const [promedioPeru, setPromedioPeru] = useState(0);
 
+  const calcularPromedio = (data, language) => {
+    const filtrados = data.filter(item => item.Language === language);
+    const salarios = filtrados.map(item => Number(item.Salary_USD));
+    const suma = salarios.reduce((acc, val) => acc + val, 0);
+    return salarios.length ? suma / salarios.length : 0;
+  };
+
   useEffect(() => {
-    const fetchSalariosGlobales = async () => {
+    const fetchData = async () => {
       try {
-        const res = await fetch('http://localhost:3000/demandaLenguajesExtranjero');
-        const data = await res.json();
+        const [resGlobal, resPeru] = await Promise.all([
+          fetch("http://localhost:3000/demandaLenguajesExtranjero"),
+          fetch("http://localhost:3000/demandaLenguajes"),
+        ]);
 
-        const filtrados = data.filter(item => item.Language === resultado.language);
-        const soloSalarios = filtrados.map(item => Number(item.Salary_USD));
+        const [dataGlobal, dataPeru] = await Promise.all([
+          resGlobal.json(),
+          resPeru.json(),
+        ]);
 
-        setSalariosGlobales(soloSalarios);
-
-        if (soloSalarios.length > 0) {
-          const suma = soloSalarios.reduce((acc, val) => acc + val, 0);
-          setPromedioGlobal(suma / soloSalarios.length);
-        } else {
-          setPromedioGlobal(0);
-        }
+        setPromedioGlobal(calcularPromedio(dataGlobal, resultado.language));
+        setPromedioPeru(calcularPromedio(dataPeru, resultado.language));
       } catch (error) {
-        console.error("Error fetching salarios globales:", error);
+        console.error("Error al obtener datos:", error);
         setPromedioGlobal(0);
-      }
-    };
-
-    const fetchSalariosPeru = async () => {
-      try {
-        const res = await fetch('http://localhost:3000/demandaLenguajes');
-        const data = await res.json();
-
-        const filtrados = data.filter(item => item.Language === resultado.language);
-        const soloSalarios = filtrados.map(item => Number(item.Salary_USD));
-
-        setSalariosPeru(soloSalarios);
-
-        if (soloSalarios.length > 0) {
-          const suma = soloSalarios.reduce((acc, val) => acc + val, 0);
-          setPromedioPeru(suma / soloSalarios.length);
-        } else {
-          setPromedioPeru(0);
-        }
-      } catch (error) {
-        console.error("Error fetching salarios Perú:", error);
         setPromedioPeru(0);
       }
     };
 
-    if (resultado.language) {
-      fetchSalariosGlobales();
-      fetchSalariosPeru();
-    }
+    if (resultado.language) fetchData();
   }, [resultado.language]);
 
   return (
@@ -66,7 +45,8 @@ export default function Resultado({ resultado, reiniciarTest }) {
 
         <div className="mb-6">
           <h2 className="text-xl font-semibold text-center mb-4">
-            El lenguaje ideal para ti es: <span className="text-blue-600">{resultado.language}</span>
+            El lenguaje ideal para ti es:{" "}
+            <span className="text-blue-600">{resultado.language}</span>
           </h2>
 
           <div className="grid gap-4">

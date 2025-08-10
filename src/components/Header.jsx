@@ -2,6 +2,13 @@ import { Link } from "react-router";
 import { useState } from "react";
 import { CgMenuRight, CgClose } from "react-icons/cg";
 
+const navLinks = [
+  { to: "/test", label: "test" },
+  { to: "/lenguajes", label: "lenguajes" },
+  { to: "/blog", label: "blog" },
+  { to: "/contacto", label: "contacto" },
+];
+
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -13,30 +20,15 @@ const Header = () => {
           <img src="/logo.png" alt="Logo" className="h-12" />
         </Link>
         <nav className="flex gap-8 text-white font-bold">
-          <Link
-            to="/test"
-            className="capitalize text-lg font-normal hover:scale-110 transition-all"
-          >
-            test
-          </Link>
-          <Link
-            to="/lenguajes"
-            className="capitalize text-lg font-normal hover:scale-110 transition-all"
-          >
-            lenguajes
-          </Link>
-          <Link
-            to="/blog"
-            className="capitalize text-lg font-normal hover:scale-110 transition-all"
-          >
-            blog
-          </Link>
-          <Link
-            to="/contacto"
-            className="capitalize text-lg font-normal hover:scale-110 transition-all"
-          >
-            contacto
-          </Link>
+          {navLinks.map(({ to, label }) => (
+            <Link
+              key={to}
+              to={to}
+              className="capitalize text-lg font-normal hover:scale-110 transition-all"
+            >
+              {label}
+            </Link>
+          ))}
         </nav>
       </div>
 
@@ -64,18 +56,11 @@ const Header = () => {
                 <CgClose />
               </button>
             </div>
-            <Link to="/test" onClick={() => setIsOpen(false)}>
-              Test
-            </Link>
-            <Link to="/lenguajes" onClick={() => setIsOpen(false)}>
-              Lenguajes
-            </Link>
-            <Link to="/blog" onClick={() => setIsOpen(false)}>
-              Blog
-            </Link>
-            <Link to="/contacto" onClick={() => setIsOpen(false)}>
-              Contacto
-            </Link>
+            {navLinks.map(({ to, label }) => (
+              <Link key={to} to={to} onClick={() => setIsOpen(false)}>
+                {label.charAt(0).toUpperCase() + label.slice(1)}
+              </Link>
+            ))}
           </div>
         )}
       </div>
