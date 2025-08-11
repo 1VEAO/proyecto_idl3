@@ -41,7 +41,7 @@ export default function Registro({ onRegistro }) {
  const enviarFormulario = async () => {
   setEnviando(true);
   try {
-   const respuesta = await fetch("http://localhost:3000/usuario", {
+   const respuesta = await fetch("https://server-k8rp.onrender.com/usuario", {
     method: "PUT",
     headers: {
      "Content-Type": "application/json",
