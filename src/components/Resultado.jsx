@@ -26,9 +26,9 @@ export default function Resultado({ resultado, reiniciarTest }) {
   const fetchData = async () => {
    try {
     const [resGlobal, resPeru, resCursos] = await Promise.all([
-     fetch("https://server-k8rp.onrender.com/demandaLenguajesExtranjero"),
-     fetch("https://server-k8rp.onrender.com/demandaLenguajes"),
-     fetch("https://server-k8rp.onrender.com/cursos"),
+     fetch("https://backend-15sl.onrender.com/demandaLenguajesExtranjero"),
+     fetch("https://backend-15sl.onrender.com/demandaLenguajes"),
+     fetch("https://backend-15sl.onrender.com/cursos"),
     ]);
 
     const [dataGlobal, dataPeru, dataCursos] = await Promise.all([
