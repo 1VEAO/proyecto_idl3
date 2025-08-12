@@ -15,7 +15,7 @@ const Lenguajes = () => {
  useEffect(() => {
   const cargarLenguajes = async () => {
    try {
-    const res = await fetch("https://backend-15sl.onrender.com/");
+    const res = await fetch("http://localhost:3000/");
     const data = await res.json();
     setLenguajes(data);
    } catch (error) {
