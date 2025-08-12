@@ -26,7 +26,7 @@ export default function Registro({ onRegistro }) {
   apellido: "",
   pais: "",
   edad: "",
-  correo: "",
+  email: "", // ✅ corregido
  });
 
  const [enviando, setEnviando] = useState(false);
@@ -47,6 +47,7 @@ export default function Registro({ onRegistro }) {
      "Content-Type": "application/json",
     },
     body: JSON.stringify(formData),
+    credentials: "include", // ✅ necesario para CORS con credenciales
    });
 
    if (!respuesta.ok) {
@@ -75,12 +76,10 @@ export default function Registro({ onRegistro }) {
     </h2>
 
     <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-     {["nombre", "apellido", "pais", "edad", "correo"].map((campo) => (
+     {["nombre", "apellido", "pais", "edad", "email"].map((campo) => (
       <input
        key={campo}
-       type={
-        campo === "edad" ? "number" : campo === "correo" ? "email" : "text"
-       }
+       type={campo === "edad" ? "number" : campo === "email" ? "email" : "text"}
        name={campo}
        placeholder={campo.charAt(0).toUpperCase() + campo.slice(1)}
        value={formData[campo]}
