@@ -28,7 +28,7 @@ export default function Registro({ onRegistro }) {
   edad: "",
   email: "", // ✅ corregido
  });
-
+ const apiUrl = import.meta.env.VITE_API_URL; // URL de la API
  const [enviando, setEnviando] = useState(false);
 
  const handleChange = (e) => {
@@ -41,7 +41,7 @@ export default function Registro({ onRegistro }) {
  const enviarFormulario = async () => {
   setEnviando(true);
   try {
-   const respuesta = await fetch("https://backend-15sl.onrender.com/usuario", {
+   const respuesta = await fetch(`${apiUrl}/usuario`, {
     method: "PUT",
     headers: {
      "Content-Type": "application/json",

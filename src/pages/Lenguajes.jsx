@@ -10,12 +10,13 @@ const LenguajeCard = ({ nombre, descripcion }) => (
 );
 
 const Lenguajes = () => {
+ const apiUrl = import.meta.env.VITE_API_URL;
  const [lenguajes, setLenguajes] = useState([]);
 
  useEffect(() => {
   const cargarLenguajes = async () => {
    try {
-    const res = await fetch("https://backend-15sl.onrender.com/");
+    const res = await fetch(`${apiUrl}/`);
     const data = await res.json();
     setLenguajes(data);
    } catch (error) {

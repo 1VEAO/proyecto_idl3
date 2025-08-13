@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 
 export default function Resultado({ resultado, reiniciarTest }) {
+ const apiUrl = import.meta.env.VITE_API_URL;
+
  const [promedioGlobal, setPromedioGlobal] = useState(0);
  const [promedioPeru, setPromedioPeru] = useState(0);
  const [demandaGlobal, setDemandaGlobal] = useState(0);
@@ -26,9 +28,9 @@ export default function Resultado({ resultado, reiniciarTest }) {
   const fetchData = async () => {
    try {
     const [resGlobal, resPeru, resCursos] = await Promise.all([
-     fetch("https://backend-15sl.onrender.com/demandaLenguajesExtranjero"),
-     fetch("https://backend-15sl.onrender.com/demandaLenguajes"),
-     fetch("https://backend-15sl.onrender.com/cursos"),
+     fetch(`${apiUrl}/demandaLenguajesExtranjero`),
+     fetch(`${apiUrl}/demandaLenguajes`),
+     fetch(`${apiUrl}/cursos`),
     ]);
 
     const [dataGlobal, dataPeru, dataCursos] = await Promise.all([
